@@ -1,0 +1,46 @@
+// p -> SELETOR [p é a tag HTML que queremos estilizar]
+// regra de estilo para o elemento p
+p {
+  //color -> PROPRIEDADE
+  //red -> VALOR
+  //color: red; -> DECLARAÇÃO
+  color: red;
+}
+
+// .titulo -> SELETOR [titulo é a classe que queremos estilizar]
+.titulo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+// #principal -> SELETOR [principal é o id que queremos estilizar]
+#principal {
+  background-color: lightblue;
+  padding: 20px;
+}
+
+// Seletores combinados
+div p {
+  color: green;
+}
+
+// Unidades de medida
+// px -> pixels
+// em -> relativa ao tamanho da fonte do elemento pai
+// rem -> relativa ao tamanho da fonte do elemento raiz (html)
+// % -> relativa ao elemento pai
+// vw -> relativa à largura da janela de visualização
+// vh -> relativa à altura da janela de visualização
+
+// Exemplo de uso de unidades de medida
+h1 {
+  font-size: 2em; /* 2 vezes o tamanho da fonte do elemento pai */
+}
+
+p {
+  margin: 10px; /* 10 pixels de margem */
+}
+
+div {
+  width: 50%; /* 50% da largura do elemento pai */
+}
