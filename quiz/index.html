@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz: Revisão HTML & CSS</title>
+    <style>
+        :root {
+            --primary: #7cb919;
+            --primary-dark: #6ca015;
+            --secondary: #1a5f9e;
+            --bg-color: #f3f4f6;
+            --text: #333;
+            --card-bg: #fff;
+            --correct: #22c55e;
+            --incorrect: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .question-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
+        }
+
+        .question-header {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 10px;
+        }
+
+        .question-num {
+            background-color: var(--secondary);
+            color: white;
+            padding: 2px 10px;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-btn {
+            background-color: #f9fafb;
+            border: 2px solid #e5e7eb;
+            padding: 1rem;
+            border-radius: 6px;
+            text-align: left;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text);
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background-color: #f3f4f6;
+            border-color: #d1d5db;
+        }
+
+        /* Classes de estado adicionadas via JS */
+        .option-btn.selected {
+            border-color: var(--secondary);
+            background-color: #eff6ff;
+        }
+        
+        .option-btn.correct {
+            border-color: var(--correct);
+            background-color: #f0fdf4;
+            color: #166534;
+            font-weight: bold;
+        }
+        
+        .option-btn.incorrect {
+            border-color: var(--incorrect);
+            background-color: #fef2f2;
+            color: #991b1b;
+        }
+
+        .option-btn:disabled {
+            cursor: default;
+        }
+
+        .feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 6px;
+            display: none;
+            font-size: 0.95rem;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.success {
+            background-color: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .feedback.error {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        #result-container {
+            text-align: center;
+            background: white;
+            padding: 3rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 3rem;
+            display: none;
+        }
+
+        .score-text {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 1rem 0;
+        }
+
+        .btn-finish {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 3rem;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        .btn-finish:hover {
+            background-color: #124576;
+        }
+        
+        code {
+            background-color: #e5e7eb;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #b91c1c;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Quiz de Revisão: HTML & CSS</h1>
+        <p>Baseado no projeto de recriação do site Baixaki Clássico</p>
+    </header>
+
+    <div class="container" id="quiz-container">
+        <!-- As questões serão injetadas aqui pelo JavaScript -->
+    </div>
+
+    <div class="container">
+        <button id="btn-submit" class="btn-finish" style="display: none;">Ver Meu Resultado</button>
+        
+        <div id="result-container">
+            <h2>Fim do Quiz!</h2>
+            <div class="score-text" id="final-score">0 / 20</div>
+            <p id="score-message">Calculando sua pontuação...</p>
+            <button onclick="location.reload()" class="btn-finish" style="margin-top: 2rem; width: auto;">Tentar Novamente</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                q: "No código do projeto, as cores principais foram definidas no seletor `:root` (ex: `--bx-green: #7cb919;`). Qual é a principal vantagem disso?",
+                options: [
+                    "Melhorar o rankeamento de SEO da página.",
+                    "Permitir reutilizar o valor em todo o código, facilitando alterações futuras em um só lugar.",
+                    "Fazer o arquivo CSS carregar mais rápido no navegador.",
+                    "Substituir a necessidade de usar classes HTML."
+                ],
+                answer: 1,
+                explanation: "As variáveis CSS nativas (declaradas no :root) permitem centralizar valores (como cores e fontes) que se repetem. Se o cliente mudar a cor da marca, você altera apenas uma linha e o site inteiro atualiza."
+            },
+            {
+                q: "O 'CSS Reset' do projeto incluiu a regra universal `box-sizing: border-box;`. O que isso faz?",
+                options: [
+                    "Remove automaticamente todas as bordas do site.",
+                    "Centraliza os elementos horizontalmente e verticalmente.",
+                    "Faz com que o `padding` e a borda sejam incluídos na largura e altura totais estipuladas para o elemento.",
+                    "Impede que o elemento ultrapasse os limites da tela (overflow)."
+                ],
+                answer: 2,
+                explanation: "Com border-box, se uma div tiver 100px de largura e receber 20px de padding, ela continuará com o tamanho final de 100px (o conteúdo interno encolhe para acomodar o padding)."
+            },
+            {
+                q: "O cabeçalho utilizou `display: flex;` combinado com `justify-content: space-between;`. Qual é o efeito visual?",
+                options: [
+                    "Centraliza todos os itens no meio do contêiner.",
+                    "Adiciona um espaço igual ao redor de todos os lados de cada item.",
+                    "Alinha todos os itens à direita do contêiner.",
+                    "Distribui os itens, colando o primeiro no início (esquerda) e o último no final (direita) do contêiner."
+                ],
+                answer: 3,
+                explanation: "O space-between usa o espaço livre do contêiner flexível e o coloca inteiramente entre os itens, empurrando-os para as bordas opostas."
+            },
+            {
+                q: "Para o ícone da logo, usamos `position: absolute;`. Para que essas formas não voassem para fora do cabeçalho, a div pai `.logo-graphic` recebeu qual propriedade?",
+                options: [
+                    "position: static;",
+                    "position: relative;",
+                    "overflow: hidden;",
+                    "display: block;"
+                ],
+                answer: 1,
+                explanation: "Um elemento 'absolute' procura o ancestral mais próximo que tenha posicionamento diferente de 'static' (como o 'relative') para usar como ponto zero de referência de coordenadas."
+            },
+            {
+                q: "Qual é a justificativa para usar tags como `<header>`, `<nav>` e `<main>` em vez de apenas `<div class=\"header\">`?",
+                options: [
+                    "Elas dão significado semântico ao código, melhorando a acessibilidade para leitores de tela e otimizando o SEO.",
+                    "Elas aplicam estilos CSS automaticamente sem precisarmos codificar.",
+                    "Fazem o Javascript carregar mais rápido.",
+                    "É obrigatório para o site funcionar em celulares."
+                ],
+                answer: 0,
+                explanation: "Tags semânticas descrevem a função do seu conteúdo estruturalmente, ajudando robôs (como o Google) e softwares de acessibilidade a 'lerem' o site corretamente."
+            },
+            {
+                q: "O botão de download ganhou um efeito de volume e iluminação na parte superior usando a propriedade CSS `linear-gradient()`. O que ela faz?",
+                options: [
+                    "Cria uma sombra projetada atrás do elemento.",
+                    "Arredonda os cantos para parecer um cilindro.",
+                    "Cria um padrão circular que se espalha do centro para as bordas.",
+                    "Cria uma transição suave entre duas ou mais cores ao longo de uma linha reta (ex: de cima para baixo)."
+                ],
+                answer: 3,
+                explanation: "O linear-gradient é aplicado na propriedade 'background' e cria efeitos de transição de cor, essenciais para simular iluminação (de uma cor clara para uma escura)."
+            },
+            {
+                q: "Nas estatísticas, recriamos um gráfico de pizza usando puramente CSS. Qual função foi utilizada para criar o efeito circular fatiado?",
+                options: [
+                    "radial-gradient()",
+                    "linear-gradient()",
+                    "conic-gradient()",
+                    "pie-chart()"
+                ],
+                answer: 2,
+                explanation: "O conic-gradient() cria transições de cores em volta de um ponto central (distribuídas em graus), perfeito para desenhar gráficos de pizza (pie charts)."
+            },
+            {
+                q: "No seletor `.tab:hover:not(.active)`, qual comportamento o pseudo-seletor `:not(.active)` estabelece?",
+                options: [
+                    "O hover só funciona se a aba tiver a classe active.",
+                    "O estilo do hover será aplicado apenas se a aba NÃO possuir a classe active.",
+                    "Remove a classe active assim que o mouse passar por cima.",
+                    "Aplica o efeito no elemento pai, mas não no filho."
+                ],
+                answer: 1,
+                explanation: "O :not() atua como uma exclusão. No menu, queríamos que as abas inativas mudassem de cor ao passar o mouse, mas a aba que já estivesse selecionada (.active) deveria ignorar o mouse."
+            },
+            {
+                q: "Para dar a impressão de que o botão foi 'escavado', usamos a palavra `inset` na propriedade `box-shadow`. O que o `inset` faz?",
+                options: [
+                    "Projeta a sombra para dentro do elemento (sombra interna).",
+                    "Muda a cor da sombra automaticamente para combinar com o fundo.",
+                    "Remove o desfoque (blur) da sombra.",
+                    "Projeta a sombra muito mais longa para fora do elemento."
+                ],
+                answer: 0,
+                explanation: "A palavra-chave 'inset' inverte o comportamento padrão do box-shadow, fazendo com que a sombra caia das bordas para o miolo interno do contêiner, gerando o efeito de reentrância (baixo-relevo)."
+            },
+            {
+                q: "Utilizamos bastante a propriedade `gap` junto com o Flexbox (ex: `gap: 15px;`). Qual é a sua exata função?",
+                options: [
+                    "Adicionar margem externa contornando todo o contêiner pai.",
+                    "Criar um espaço vital de respiro entre as bordas do pai e o conteúdo (substitui o padding).",
+                    "Esconder os itens que não cabem na tela.",
+                    "Adicionar espaçamento estritamente entre os itens filhos de um contêiner (flex ou grid)."
+                ],
+                answer: 3,
+                explanation: "O gap é poderoso porque coloca espaço APENAS entre os elementos internos, sem empurrar as bordas iniciais ou finais do layout."
+            },
+            {
+                q: "Para a aba ativa se mesclar com o contêiner de baixo (escondendo a linha de divisão), usamos `margin-bottom: -1px;`. O que uma margem negativa causa?",
+                options: [
+                    "Oculta 1 pixel do conteúdo do elemento.",
+                    "Puxa o elemento para fora do seu fluxo normal, permitindo sobrepor-se aos elementos adjacentes.",
+                    "Aumenta a altura interna da caixa em 1 pixel.",
+                    "Empurra o elemento firmemente para cima."
+                ],
+                answer: 1,
+                explanation: "A margem negativa atrai o elemento na direção indicada, ignorando os limites normais das caixas, permitindo que a base da aba cobrisse exatamente a linha da borda do contêiner de baixo."
+            },
+            {
+                q: "Todos os links (tags `<a>`) começaram com `text-decoration: none;`. O que essa regra CSS afeta no design?",
+                options: [
+                    "Muda a cor azul padrão dos links para preto.",
+                    "Deixa o texto do link em itálico.",
+                    "Remove o sublinhado padrão que os navegadores colocam abaixo de todos os links.",
+                    "Impede que o link seja clicado."
+                ],
+                answer: 2,
+                explanation: "Navegadores aplicam 'text-decoration: underline' por padrão nos hiperlinks. Usamos 'none' para remover a linha e estilizarmos da nossa maneira."
+            },
+            {
+                q: "Para centralizar o ícone do Skype perfeitamente (tanto horizontal quanto verticalmente) dentro do seu círculo branco, usamos qual combinação de Flexbox?",
+                options: [
+                    "display: inline-block; text-align: center;",
+                    "display: flex; justify-content: center; align-items: center;",
+                    "display: flex; margin: auto;",
+                    "position: absolute; top: 50%; left: 50%;"
+                ],
+                answer: 1,
+                explanation: "Dentro de um Flex container, 'justify-content: center' alinha no eixo principal (horizontal por padrão) e 'align-items: center' alinha no eixo transversal (vertical)."
+            },
+            {
+                q: "Na aba do menu selecionada, também foi adicionado um `z-index: 2;`. Qual é a finalidade dessa propriedade?",
+                options: [
+                    "Aplicar um zoom de 2x no tamanho da fonte do elemento.",
+                    "Controlar a transparência (opacidade) do elemento.",
+                    "Controlar a ordem de empilhamento vertical (qual elemento fica na frente caso se sobreponham no eixo Z).",
+                    "Aumentar a largura da borda em 2 pixels."
+                ],
+                answer: 2,
+                explanation: "Como usamos uma margem negativa para a aba sobrepor a linha de baixo, o z-index garante que ela seja forçada a aparecer por cima do conteúdo inferior, e não ser escondida por ele."
+            },
+            {
+                q: "Para fazer com que a caixa em volta do ícone do Skype ficasse perfeitamente redonda, qual regra foi utilizada?",
+                options: [
+                    "border-circle: true;",
+                    "box-shape: circle;",
+                    "border-radius: 50%;",
+                    "border-radius: 100px;"
+                ],
+                answer: 2,
+                explanation: "Aplicar 'border-radius: 50%' em um elemento que possui a largura (width) e altura (height) iguais transforma o quadrado/retângulo em um círculo perfeito."
+            },
+            {
+                q: "No arquivo CSS, temos a regra `a:hover { text-decoration: underline; }`. O que a pseudo-classe `:hover` indica?",
+                options: [
+                    "O estilo será aplicado somente quando o usuário clicar e segurar o link.",
+                    "O estilo será aplicado quando o usuário sobrepor o cursor do mouse em cima do link.",
+                    "O estilo é ativado para links que já foram visitados anteriormente.",
+                    "O estilo faz o link piscar na tela."
+                ],
+                answer: 1,
+                explanation: "A pseudo-classe :hover reage à interação do ponteiro do mouse. No projeto, os links que não tinham sublinhado passavam a tê-lo para indicar que eram clicáveis quando o usuário apontava para eles."
+            },
+            {
+                q: "Para inserir os vários ícones (lupa, seta, estrelas), utilizamos tags HTML do tipo `<i class=\"fa-solid fa-star\"></i>`. De onde vêm as imagens desses ícones?",
+                options: [
+                    "São imagens JPG salvas na mesma pasta do arquivo HTML.",
+                    "São ícones gerados nativamente pelo Javascript puro do navegador.",
+                    "Foram inseridas via biblioteca FontAwesome, que usa CSS e classes para carregar ícones vetoriais como se fossem fontes de texto.",
+                    "As tags <i> nativamente criam ilustrações vetoriais no HTML5."
+                ],
+                answer: 2,
+                explanation: "Ao importar a folha de estilos do FontAwesome no cabeçalho, as classes .fa-solid invocam caracteres especiais (ícones) usando o recurso de fontes e propriedades de conteúdo (::before) do CSS."
+            },
+            {
+                q: "Alguns títulos e textos possuíam a regra `text-shadow: 1px 1px 1px rgba(0,0,0,0.2);`. O que essa regra produz?",
+                options: [
+                    "Uma sombra em volta do contêiner flexível do texto.",
+                    "Muda a cor da fonte gradativamente.",
+                    "Cria uma sombra sutil projetada exclusivamente atrás das letras, dando sensação de relevo ou profundidade ao texto.",
+                    "Destaca o texto como se fosse um marca-texto amarelo."
+                ],
+                answer: 2,
+                explanation: "Diferente do box-shadow que projeta a sombra na 'caixa' (div), o text-shadow segue exatamente o contorno dos caracteres da fonte."
+            },
+            {
+                q: "O seletor universal em CSS é representado por um asterisco `*`. Por que o projeto inicia com a regra `* { margin: 0; padding: 0; }`?",
+                options: [
+                    "Para fazer todas as fontes do site ficarem em tamanho reduzido.",
+                    "Para resetar as margens e espaçamentos automáticos que os navegadores (Chrome, Firefox, etc) aplicam nativamente em várias tags HTML.",
+                    "Para esconder todos os elementos vazios da tela.",
+                    "Para forçar o site a ficar sempre alinhado à esquerda."
+                ],
+                answer: 1,
+                explanation: "Esse é o 'Reset CSS' mais básico. Ele impede que as margens padrões que vêm de fábrica no HTML (como em <h1>, <p> ou <body>) estraguem o layout que você está construindo."
+            },
+            {
+                q: "Nas medidas CSS, utilizamos `max-width: 1000px;` para o limite do site e `width: 100%;` em alguns contêineres internos. Qual a diferença conceitual entre px (pixel) e % (porcentagem)?",
+                options: [
+                    "Não há diferença, ambas respondem ao tamanho da tela celular.",
+                    "Px é um valor fixo e absoluto na tela; Porcentagem é um valor relativo, calculado com base no tamanho do elemento pai.",
+                    "A porcentagem serve apenas para ajustar tamanho de fonte, o px serve para caixas (divs).",
+                    "Px é relativo à resolução do monitor, Porcentagem é fixa baseada no zoom do navegador."
+                ],
+                answer: 1,
+                explanation: "Pixeis (px) impõem um tamanho fixo. Porcentagens (%) garantem que o elemento estique ou encolha fluidamente, dependendo de quanto espaço o elemento ancestral (pai) oferece a ele."
+            }
+        ];
+
+        let answers = new Array(questions.length).fill(null);
+        let score = 0;
+        let isSubmitted = false;
+
+        const container = document.getElementById('quiz-container');
+        const submitBtn = document.getElementById('btn-submit');
+        const resultContainer = document.getElementById('result-container');
+
+        // Renderizar questões
+        questions.forEach((q, index) => {
+            const qCard = document.createElement('div');
+            qCard.className = 'question-card';
+            qCard.id = `q-card-${index}`;
+
+            const qHeader = document.createElement('div');
+            qHeader.className = 'question-header';
+            qHeader.innerHTML = `<span class="question-num">${index + 1}</span> <span>${q.q}</span>`;
+            
+            const optionsGrid = document.createElement('div');
+            optionsGrid.className = 'options-grid';
+
+            q.options.forEach((optText, optIndex) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerHTML = `${String.fromCharCode(65 + optIndex)}) ${optText}`;
+                btn.onclick = () => selectOption(index, optIndex, btn);
+                optionsGrid.appendChild(btn);
+            });
+
+            const feedbackDiv = document.createElement('div');
+            feedbackDiv.className = 'feedback';
+            feedbackDiv.id = `feedback-${index}`;
+
+            qCard.appendChild(qHeader);
+            qCard.appendChild(optionsGrid);
+            qCard.appendChild(feedbackDiv);
+            container.appendChild(qCard);
+        });
+
+        // Função de seleção
+        function selectOption(questionIndex, optionIndex, clickedBtn) {
+            if (isSubmitted) return; // Travar após submissão
+
+            answers[questionIndex] = optionIndex;
+            
+            // Remover seleção anterior visualmente
+            const parent = clickedBtn.parentElement;
+            const buttons = parent.querySelectorAll('.option-btn');
+            buttons.forEach(b => b.classList.remove('selected'));
+            
+            // Adicionar seleção visual
+            clickedBtn.classList.add('selected');
+
+            // Mostrar botão de submit se respondeu pelo menos uma
+            submitBtn.style.display = 'block';
+        }
+
+        // Submissão
+        submitBtn.onclick = () => {
+            if (isSubmitted) return;
+            isSubmitted = true;
+            score = 0;
+            submitBtn.style.display = 'none';
+
+            // Avaliar respostas
+            questions.forEach((q, index) => {
+                const qCard = document.getElementById(`q-card-${index}`);
+                const buttons = qCard.querySelectorAll('.option-btn');
+                const feedbackDiv = document.getElementById(`feedback-${index}`);
+                
+                const userAnswer = answers[index];
+                
+                // Desativar botões
+                buttons.forEach(b => b.disabled = true);
+
+                if (userAnswer === q.answer) {
+                    score++;
+                    buttons[userAnswer].classList.add('correct');
+                    feedbackDiv.innerHTML = `<strong><i class="fa-solid fa-check"></i> Correto!</strong> <br> ${q.explanation}`;
+                    feedbackDiv.className = 'feedback success show';
+                } else {
+                    // Marcar a errada que ele escolheu
+                    if (userAnswer !== null) {
+                        buttons[userAnswer].classList.add('incorrect');
+                    }
+                    // Destacar a que era certa
+                    buttons[q.answer].classList.add('correct');
+                    
+                    feedbackDiv.innerHTML = `<strong><i class="fa-solid fa-xmark"></i> Incorreto!</strong> <br> ${q.explanation}`;
+                    feedbackDiv.className = 'feedback error show';
+                }
+            });
+
+            // Mostrar resultado final
+            resultContainer.style.display = 'block';
+            document.getElementById('final-score').innerText = `${score} / 20`;
+            
+            const msgEl = document.getElementById('score-message');
+            if(score === 20) {
+                msgEl.innerText = "Perfeito! Você dominou o CSS e o HTML dessa aula!";
+            } else if (score >= 14) {
+                msgEl.innerText = "Excelente trabalho! Você absorveu os conceitos principais de Flexbox e Posicionamento.";
+            } else if (score >= 10) {
+                msgEl.innerText = "Bom desempenho. Revise as explicações das questões que você errou para fixar os comandos!";
+            } else {
+                msgEl.innerText = "É um assunto denso! Leia as explicações atentamente e tente novamente!";
+            }
+            
+            // Scroll para o fim
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth'
+            });
+        };
+    </script>
+</body>
+</html>
