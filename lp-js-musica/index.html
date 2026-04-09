@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<!-- Estrutura básica de uma página HTML
+  tags essenciais: html, head [metadados],
+   body [conteúdo visível]
+
+   Tags e elementos comuns: header, nav, section, article, aside, footer
+   Tag é um elemento HTML, pode conter atributos (ex: class, id) e conteúdo (texto, outros elementos), e dizem qual tipo de informação contem nessa parte da página.
+   -->
+<html lang="pt-BR">
+  <head>
+    <title>LP aula</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://gstatic.com/images/branding/searchlogo/ico/favicon.ico" rel="icon">
+  </head>
+  <body>
+    <!-- header ela ser o cabeçalho da página, geralmente contém logo, título e slogan -->
+    <header>
+      <!-- img é a tag de imagem, o atributo src é a fonte da imagem, e alt é o texto alternativo caso a imagem não carregue -->
+      <img src="https://picsum.photos/300/90" alt="Logo">
+      <h1>Marca Sucesso</h1>
+      <p>Soluções modernas para um mundo moderno!</p>
+    </header>
+    <!-- section é a tag de seção, geralmente contém um conjunto de elementos relacionados -->
+    <section class="hero">
+      <!-- div é a tag de divisão, geralmente contém outros elementos -->
+      <div>
+        <h2>Transforme sua ideia em realidade</h2>
+        <p>Crie algo incrível com nossa solução simples.</p>
+        <!-- a é a tag de link, o atributo href é o destino do link -->
+        <a href="#contato">Começar agora</a>
+      </div>
+    </section>
+    <!-- class cria uma classe CSS para estilizar o elemento -->
+    <section class="servicos">
+      <h2>Nossos Serviços</h2>
+      <div class="cards">
+        <div class="card">
+          <h3>Design</h3>
+          <p>Layouts divertidos!</p>
+        </div>
+        <div class="card">
+          <h3>Desenvolvimento</h3>
+          <p>Fazendo acontecer com código!</p>
+        </div>
+        <div class="card">
+          <h3>Suporte</h3>
+          <p>Suportando o que você não consegue suportar!</p>
+        </div>
+      </div>
+    </section>
+    <section class="cta">
+      <h2>Pronto para começar?</h2>
+      <p>Entre em contato e leve seu projeto para outro nível!</p>
+      <button>Fale Conosco</button>
+    </section>
+    <!-- id é um identificador único para o elemento, usado para navegação, manipulação no JS e estilização -->
+    <section id="contato">
+      <h2>Entre em Contato</h2>
+      <div class="form-container">
+        <!-- form é a tag de formulário, geralmente contém campos de entrada e botões -->
+        <form>
+          <div class="form-group">
+            <!-- label é a tag de rótulo, geralmente contém o texto do campo -->
+            <label for="nome">Nome</label>
+            <!-- input é a tag de entrada, o atributo type é o tipo de campo, id é o identificador do campo, placeholder é o texto de dica, required é para tornar o campo obrigatório -->
+            <input type="text" id="nome" placeholder="Seu nome" required>
+          </div>
+          <div class="form-group">
+            <label for="email">E-mail</label>
+            <input type="text" id="email" placeholder="Seu e-mail" required>
+          </div>
+          <div class="form-group">
+            <label for="mensagem">Mensagem</label>
+            <!-- textarea é a tag de área de texto, geralmente contém o conteúdo do campo -->
+            <textarea name="mensagem" id="mensagem" placeholder="Digite sua mensagem" required></textarea>
+          </div>
+          <!-- button é a tag de botão, o atributo type é o tipo de botão, id é o identificador do botão -->
+          <button type="submit" id="btn-acao">Enviar Mensagem</button>
+        </form>
+      </div>
+    </section>
+    <audio id="radio-stream" src="https://stm23.xcast.com.br:12832/stream" preload="none"></audio>
+    <div class="radio-player-container">
+        <div class="player-left">
+            <div class="logo">
+                <img id="player-program-logo" src="https://liberdade.com.br/wp-content/uploads/2025/07/cropped-ICON-BRANCO-1-1-150x150.png" alt="Logo da Rádio">
+            </div>
+            <div class="radio-info">
+                <div class="title" id="player-program-title">Liberdade FM</div>
+                <div class="status">
+                    <span id="player-program-locutor">Música no Ar</span> | <span id="status-text">Pausado</span>
+                </div>
+            </div>
+        </div>
+        <div class="player-controls">
+            <button class="play-pause-btn" id="play-pause-button" aria-label="Tocar a rádio">
+                <svg class="icon-play" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="display: block;"><path d="M8 5v14l11-7z"></path></svg>
+                <svg class="icon-pause" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg>
+            </button>
+            <div class="volume-control">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"></path></svg>
+                <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="80" aria-label="Controle de volume">
+            </div>
+        </div>
+    </div>
+    <!-- footer é a tag de rodapé, geralmente contém informações de contato, direitos autorais e links para redes sociais -->
+    <footer>
+      <p>Todos os direitos reservados.</p>
+    </footer>
+    <!-- script é a tag de script, geralmente contém código JavaScript ou o link para um arquivo JS -->
+    <script src="script.js"></script>
+    <script src="player.js"></script>
+  </body>
+  </html>
