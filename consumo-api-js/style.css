@@ -1,0 +1,84 @@
+//Reset estrutura basica do navegador
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f0f2f5;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+header {
+  background-color: #0b1d2d;
+  color: #c8aa6e;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+h1 {
+  margin-bottom: 15px;
+}
+
+.search-container input {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px 15px;
+  border: 2px solid #c8aa6e;
+  border-radius: 5px;
+  background-color: #071018;
+  color: #f0f2f5;
+  font-size: 16px;
+}
+
+main {
+  padding: 20px;
+}
+
+#champion-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.champion-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+  overflow: hidden;
+}
+
+.champion-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.champion-card h3 {
+  padding: 15px 10px 5px;
+  color: #0b1d2d;
+}
+
+.champion-card:hover {
+  transform: translateY(-5px); /* Efeito de flutuar ao passar o mouse */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.champion-card p {
+  padding: 0 10px 15px;
+  color: #666;
+  font-size: 14px;
+  text-transform: capitalize; /* Deixa a primeira letra de cada palavra maiúscula */
+}
