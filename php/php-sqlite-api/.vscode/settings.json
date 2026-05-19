@@ -1,0 +1,10 @@
+{
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "driver": "SQLite",
+      "name": "Aula",
+      "database": "${workspaceFolder:php-sqlite-api}/db/database.sqlite"
+    }
+  ]
+}
