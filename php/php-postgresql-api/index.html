@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Consumo de API - Cadastro de Usuários</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Gerenciar Usuários</h2>
+    
+    <!-- Formulário que servirá tanto para Criar quanto para Atualizar -->
+    <form id="usuarioForm">
+        <!-- Campo oculto para guardar o ID quando formos editar -->
+        <input type="hidden" id="usuarioId">
+        
+        <div class="form-group">
+            <input type="text" id="nome" placeholder="Nome do usuário" required>
+            <input type="email" id="email" placeholder="E-mail" required>
+            <button type="submit" id="btnSalvar">Salvar Usuário</button>
+            <button type="button" id="btnCancelar" style="display: none;" onclick="limparFormulario()">Cancelar Edição</button>
+        </div>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody id="tabelaUsuarios">
+            <!-- As linhas serão injetadas aqui pelo JavaScript -->
+        </tbody>
+    </table>
+    <script src="script.js"></script>
+</body>
+</html>
