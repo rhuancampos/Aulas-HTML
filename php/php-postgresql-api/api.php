@@ -13,7 +13,8 @@ function getConnection() {
   
   try {
     // Instancia o objeto PDO para se conectar ao banco SQLite
-    $pdo = new PDO('pgsql:host=192.168.97.2;port=5432;dbname=teste', 'postgres', '1234');
+    $pdo = new PDO('pgsql:host=aws-1-sa-east-1.pooler.supabase.com;port=5432;dbname=postgres', 'postgres.ywmzxqfojmjjshgfrani', '$up@b4s3/#2026');
+    //DATABASE_URL=postgresql://postgres:[YOUR-PASSWORD]@db.ywmzxqfojmjjshgfrani.supabase.co:5432/postgres
     //$pdo = new PDO('mysql:host=127.0.0.1;port=3306;dbname=teste', 'root', '1234');
     //$pdo = new PDO('pqsql:host=127.0.0.1;port=5432;dbname=teste', 'root', '1234');
 
@@ -62,6 +63,7 @@ switch($method){
         
         if($usuario){
           // Se o usuário existir, converte o array para JSON e o devolve para o cliente
+          http_response_code(200);
           echo json_encode($usuario, JSON_UNESCAPED_UNICODE);
         } else {
           // Se não existir, define o código HTTP como 404 (Não Encontrado) e devolve o erro
@@ -77,6 +79,7 @@ switch($method){
         $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
         // Retorna a lista completa de usuários em JSON
+        http_response_code(200);
         echo json_encode($usuarios, JSON_UNESCAPED_UNICODE);
       }
     } catch(PDOException $e) {
